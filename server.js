@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 3000;
 let whitelist = ['http://localhost:8080']
 let corsOptions = {
   origin: (origin, callback) => {
-    if (whitelist.includes(origin) || !origin) {
+    if (whitelist.includes(origin)) {
       callback(null, true)
     } else {
       callback(new Error('Not allowed by CORS'))
