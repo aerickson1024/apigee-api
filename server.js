@@ -3,7 +3,16 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+let whitelist = []
+let corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 
@@ -11,7 +20,7 @@ app.get('/', (req, res) => {
   res.send('We\'ll do it live!');
 });
 
-app.get('/data', (req, res) => {
+app.get('/data', cors(corsOptions), (req, res) => {
   let data = [{
       "_id": "5c47846337a1cbee4bb6f4e5",
       "name": {
